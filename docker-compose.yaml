@@ -1,0 +1,16 @@
+name: newsletter-api
+
+services:
+  test-a:
+    build:
+      context: .
+      dockerfile: services/test-a/Dockerfile
+    container_name: test-a-service
+    ports:
+      - "8081:8080"
+    networks:
+      - newsletter-net
+
+networks:
+  newsletter-net:
+    driver: bridge
