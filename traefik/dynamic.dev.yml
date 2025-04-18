@@ -1,0 +1,26 @@
+http:
+  routers:
+    test-a:
+      rule: "PathPrefix(`/api/test`)"
+      service: test_a-service
+      entryPoints:
+        - web
+      middlewares:
+        - strip-api
+        - ratelimiter
+
+  middlewares:
+    strip-api:
+      stripPrefix:
+        prefixes:
+          - "/api"
+    ratelimiter:
+      rateLimit:
+        average: 100
+        burst: 200
+
+  services:
+    test_a-service:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8081"
