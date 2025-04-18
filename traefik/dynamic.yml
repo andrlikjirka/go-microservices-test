@@ -7,12 +7,17 @@ http:
         - web
       middlewares:
         - strip-api
+        - ratelimiter
 
   middlewares:
     strip-api:
       stripPrefix:
         prefixes:
           - "/api"
+    ratelimiter:
+      rateLimit:
+        average: 100
+        burst: 200
 
   services:
     test_a-service:
