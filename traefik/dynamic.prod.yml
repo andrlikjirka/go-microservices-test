@@ -1,6 +1,6 @@
 http:
   routers:
-    test-a:
+    test_a:
       rule: "PathPrefix(`/api/test`)"
       service: test_a-service
       entryPoints:
@@ -23,4 +23,4 @@ http:
     test_a-service:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:8081"
+          - url: "http://test_a:8081"

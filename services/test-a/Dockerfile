@@ -9,8 +9,8 @@ COPY ./libs ./libs
 WORKDIR /app/services/test-a
 
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -o test-service ./services/test-a/cmd/api
+RUN CGO_ENABLED=0 GOOS=linux go build -o test-service ./cmd/api
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["./test-service"]

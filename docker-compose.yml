@@ -7,16 +7,12 @@ services:
       - "--entrypoints.web.address=:80"
       - "--api.insecure=true" # for dev only (TODO: secure auth for prod)
       - "--api.dashboard=true"
-      - "--providers.docker=true"
-    labels:
-      - "traefik.http.middlewares.test_a-strip.stripprefix.prefixes=/api"
-      - "traefik.http.middlewares.ratelimiter.ratelimit.average=100"
-      - "traefik.http.middlewares.ratelimiter.ratelimit.burst=200"
+      - "--providers.file.filename=/etc/traefik/dynamic.prod.yml"
     ports:
       - "80:80"
       - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/dynamic.prod.yml:/etc/traefik/dynamic.prod.yml
     networks:
       - newsletter-net
 
@@ -35,10 +31,7 @@ services:
     build:
       context: .
       dockerfile: services/test-a/Dockerfile
-    labels:
-      - "traefik.http.routers.test_a.rule=PathPrefix(`/api/test`)"
-      - "traefik.http.routers.test_a.middlewares=test_a-strip,ratelimiter"
-      - "traefik.http.services.test_a.loadbalancer.server.port=8080"
+    container_name: test_a
     networks:
       - newsletter-net
 

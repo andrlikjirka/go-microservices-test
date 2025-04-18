@@ -5,14 +5,14 @@ services:
     image: traefik:v2.10
     command:
       - "--entrypoints.web.address=:80"
-      - "--api.insecure=true"
-      - "--api.dashboard=true" # for dev only (TODO: secure auth for prod)
-      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+      - "--api.insecure=true" # for dev only (TODO: secure auth for prod)
+      - "--api.dashboard=true"
+      - "--providers.file.filename=/etc/traefik/dynamic.dev.yml"
     ports:
       - "80:80"
       - "8080:8080"
     volumes:
-      - ./traefik:/etc/traefik
+      - ./traefik/dynamic.dev.yml:/etc/traefik/dynamic.dev.yml
 
 networks:
   newsletter-net:
