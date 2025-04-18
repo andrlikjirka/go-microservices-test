@@ -1,0 +1,19 @@
+name: newsletter-api
+
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--api.insecure=true"
+      - "--api.dashboard=true" # for dev only (TODO: secure auth for prod)
+      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./traefik:/etc/traefik
+
+networks:
+  newsletter-net:
+    driver: bridge

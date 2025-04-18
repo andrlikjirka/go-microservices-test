@@ -1,0 +1,44 @@
+name: newsletter-api
+
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--api.insecure=true" # for dev only (TODO: secure auth for prod)
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - newsletter-net
+
+  db:
+    image: postgres:17.4
+    ports:
+      - "5432:5432"
+    networks:
+      - newsletter-net
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  test_a:
+    build:
+      context: .
+      dockerfile: services/test-a/Dockerfile
+    labels:
+      - "traefik.http.routers.test_a.rule=PathPrefix(`/api/test`)"
+      - "traefik.http.middlewares.test_a-strip.stripprefix.prefixes=/api"
+      - "traefik.http.routers.test_a.middlewares=test_a-strip"
+      - "traefik.http.services.test_a.loadbalancer.server.port=8080"
+    networks:
+      - newsletter-net
+
+networks:
+  newsletter-net:
+    driver: bridge
