@@ -31,9 +31,15 @@ services:
     build:
       context: .
       dockerfile: services/test-a/Dockerfile
+      target: prod
     container_name: test_a
+    env_file:
+      - .env
     networks:
       - newsletter-net
+    depends_on:
+      - db
+      - traefik
 
 networks:
   newsletter-net:

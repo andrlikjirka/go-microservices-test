@@ -1,5 +1,5 @@
 package hello
 
 func GetHelloWorld() string {
-	return "Hello World! <3"
+	return "Hello World!"
 }

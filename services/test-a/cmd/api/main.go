@@ -1,13 +1,12 @@
 package main
 
 import (
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"hello"
 	"logger"
 	"net/http"
 	"os"
-
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -18,7 +17,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/test", func(c echo.Context) error {
-		logger.Info("Sending hello world")
+		logger.Info("Sending Hello World")
 		return c.JSON(http.StatusOK, hello.GetHelloWorld())
 		//return c.JSON(http.StatusOK, "Hello")
 	})
